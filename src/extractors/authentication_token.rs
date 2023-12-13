@@ -20,13 +20,13 @@ use jsonwebtoken::{
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
-    pub id: usize,
+    pub username: String,
     pub exp: usize,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AuthenticationToken {
-    id: usize,
+    username: String,
 }
 
 impl FromRequest for AuthenticationToken {
@@ -57,7 +57,7 @@ impl FromRequest for AuthenticationToken {
 	);
 
 	match token_result {
-	    Ok(token) => ready(Ok(AuthenticationToken { id: token.claims.id })),
+	    Ok(token) => ready(Ok(AuthenticationToken { username: token.claims.username })),
 	    Err(_e) => ready(Err(ErrorUnauthorized("Invalid authentication token sent!"))),
 	}
     }

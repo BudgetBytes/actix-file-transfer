@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, createContext } from "react";
+import Main from "./protected/main";
 
+export const JWTContext = createContext({ token: '' })
 
 async function sha256(message) {
     const msgBuffer = new TextEncoder().encode(message);
@@ -13,28 +15,27 @@ const App = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [token, setToken] = useState(null);
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
 
     const handleSave = async () => {
         const hash = await sha256(password);
-
-        fetch("http://localhost:8080/auth", {
-            method: "post",
-            headers: { "content-type": "application/json" },
+        fetch('http://localhost:8080/user/encode', {
+            method: 'post',
+            headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
-                username: username,
-                password: hash
+                username,
+                hash
             })
-        }).then(response => {
-            if (response.ok) return response.text();
-            else return null;
-        }).then(data => {
-            if (data !== null)
-                setToken(data)
-            else
-                setError("Wrong credentials")
-
         })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token !== '' ) {
+                    setToken(data.token)
+                } else {
+                    setError(data.message)
+                }
+            });
+
     }
 
     return (
@@ -44,13 +45,12 @@ const App = () => {
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     <button onClick={handleSave}>Login</button>
-                    {error && <h1>Wrong credentials</h1>}
-
+                    {error && <h1>{error}</h1>}
                 </>
                 :
-                <>
-                    <h1>Logged successfully</h1>
-                </>
+                <JWTContext.Provider value={{ token: token }}>
+                    <Main />
+                </JWTContext.Provider>
             }
 
         </>
