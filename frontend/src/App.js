@@ -1,4 +1,5 @@
 import React, { useState, createContext } from "react";
+import { TextField, Button, Stack } from "@mui/material";
 import Main from "./protected/main";
 
 export const JWTContext = createContext({ token: '' })
@@ -41,12 +42,13 @@ const App = () => {
     return (
         <>
             {token === null ?
-                <>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <button onClick={handleSave}>Login</button>
+                <Stack spacing={2} alignItems='center' justifyContent='center'>
+                    <TextField variant="outlined" label="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                    <TextField variant="outlined" type="password" label="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+
+                    <Button variant="outlined" onClick={handleSave}>Login</Button>
                     {error && <h1>{error}</h1>}
-                </>
+                </Stack>
                 :
                 <JWTContext.Provider value={{ token: token }}>
                     <Main />
