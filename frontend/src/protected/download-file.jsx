@@ -6,7 +6,7 @@ export default function DownloadFile() {
     const {token} = useContext(JWTContext);
     const [files, setFiles] = useState([]);
     const handleGetFiles = async () => {
-        const response = await fetch("http://localhost:8080/user/getfiles", {
+        const response = await fetch("/user/getfiles", {
             headers: {'Authorization': token}
         })
         if(!response.ok) {
@@ -19,7 +19,7 @@ export default function DownloadFile() {
     }
 
     const handleDownload = async (file) => {  
-        const response = await fetch(`http://localhost:8080/user/download/${file}`, {
+        const response = await fetch(`/user/download/${file}`, {
             headers: {'Authorization': token}
         });
     

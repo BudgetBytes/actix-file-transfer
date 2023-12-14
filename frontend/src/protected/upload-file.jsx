@@ -18,7 +18,7 @@ export default function UploadFile() {
                 formData.append('file', file);
             }
 
-            const response = await fetch("http://localhost:8080/user/upload", {
+            const response = await fetch("/user/upload", {
                 method: 'post',
                 headers: { 'Authorization': token },
                 body: formData

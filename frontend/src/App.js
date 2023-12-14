@@ -20,7 +20,7 @@ const App = () => {
 
     const handleSave = async () => {
         const hash = await sha256(password);
-        fetch('http://localhost:8080/user/encode', {
+        fetch('/user/encode', {
             method: 'post',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
