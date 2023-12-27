@@ -45,7 +45,8 @@ async fn encode_token(
 ) -> HttpResponse {
     let username = user_credentials.username.clone();
     let hash = user_credentials.hash.clone();
-    if hash != "e548ea88bdb6cfd05ee5258bba0b7ac8ce6a5676035bada4039b6c641e0a6840" {
+    //here goes the sha256 hash.Doen this way for simplicity, DO NOT do it in production
+    if hash != "" {
         return HttpResponse::BadRequest().json(EncodeResponse {
             message: "Wrong credentials".to_owned(),
             token: "".to_string(),
